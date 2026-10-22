@@ -1,0 +1,16 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+
+# files created when the notebook runs
+ollama.log
+web.log
+app.log
+rag.py
+benchmark.py
+documents/
+local_ai_lab/
+local-ai-web/
+LocalAI_Lab/
