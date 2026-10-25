@@ -1,5 +1,6 @@
 """FSTT Local AI Assistant — Flask + Ollama + local RAG + conversation history."""
-import json, os, time
+import csv, json, os, time
+from datetime import datetime
 import requests
 from flask import Flask, jsonify, render_template, request
 
@@ -9,6 +10,7 @@ OLLAMA = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 MODEL = os.environ.get("MODEL", "qwen3.5:9b")
 DOC_DIR = os.path.join(os.path.dirname(__file__), "..", "documents")
 MAX_TURNS = 6                      # remembered user/assistant pairs
+LOG_FILE = os.path.join(os.path.dirname(__file__), "response_times.csv")
 
 app = Flask(__name__)
 retriever = rag.Retriever(rag.load_documents(DOC_DIR))
@@ -38,6 +40,17 @@ def call_ollama(messages, structured=False):
     r = requests.post(f"{OLLAMA}/api/chat", json=payload, timeout=600)
     r.raise_for_status()
     return r.json()
+
+
+def record(question, structured, seconds, tokens, tps):
+    """Append one line per answer to response_times.csv."""
+    new_file = not os.path.exists(LOG_FILE)
+    with open(LOG_FILE, "a", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if new_file:
+            w.writerow(["time", "question", "structured", "seconds", "tokens", "tokens_per_s"])
+        w.writerow([datetime.now().isoformat(timespec="seconds"), question, structured,
+                    round(seconds, 2), tokens, round(tps, 1) if tps else ""])
 
 
 @app.route("/")
@@ -79,6 +92,7 @@ def ask():
 
     tokens = out.get("eval_count")
     tps = tokens / (out["eval_duration"] / 1e9) if tokens and out.get("eval_duration") else None
+    record(question, structured, elapsed, tokens, tps)
     return jsonify(answer=answer, structured=parsed,
                    sources=[{"doc": n, "score": round(s, 2)} for n, s in hits],
                    seconds=round(elapsed, 2), tokens=tokens,
