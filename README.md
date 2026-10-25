@@ -37,7 +37,8 @@ When it runs, the notebook also creates working files next to it (`documents/`, 
 | Document grounding / mini-RAG | Off-topic questions answered with "Information not available." |
 | Keyword vs embedding retrieval | Embeddings find the right document when the words differ |
 | Vision (gemma3:4b) | Correct description of the test image in 24 s |
-| Mini-project | Flask assistant with RAG, history, JSON answers and response time |
+| Mini-project | Flask assistant with RAG, history, JSON answers; response times recorded in a CSV file (1.8 s normal answer, 5.8 s JSON answer) |
+| Console chatbot (`chatbot.py`) | Remembers the name given in the first message |
 
 ## How to run
 Open `LAB_Local_AI_Ollama.ipynb` in Google Colab with a GPU runtime (T4) and run the cells in order. The first cells install Ollama and start the server.
