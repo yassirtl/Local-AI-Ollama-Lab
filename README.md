@@ -7,8 +7,12 @@ PhD lab on running and developing local AI applications with Ollama and Python.
 |---|---|
 | `LAB_Local_AI_Ollama.ipynb` | Notebook with code, outputs and answers (Parts 1 to 19, Q1 to Q15) |
 | `image.jpg` | Test image for the vision part (Part 14) |
+| `LocalAI_Lab/report.pdf` | Lab report |
+| `LocalAI_Lab/source/` | Final project: Flask app, `chatbot.py`, `rag.py`, `benchmark.py`, HTML template |
+| `LocalAI_Lab/documents/` | Course documents used by the retriever |
+| `LocalAI_Lab/screenshots/` | Screenshots 01 to 06 (installation, model, chatbot, Python, RAG, web app) |
 
-The notebook creates the other files when it runs (`documents/`, `rag.py`, `benchmark.py`, the Flask apps and the `LocalAI_Lab/` folder).
+When it runs, the notebook also creates working files next to it (`documents/`, `rag.py`, `benchmark.py`, the small Flask app of Part 15).
 
 ## Models
 | Role | Model |
